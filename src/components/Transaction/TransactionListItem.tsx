@@ -2,8 +2,13 @@ import { css } from "@emotion/react";
 import HistoryItemImage from "./HistoryItemImage";
 import HistoryDate from "./HistoryDate";
 import HistoryNameAndAmount from "./HistoryNameAndAmount";
+import { dataResponseType } from "../../types/dataType";
 
-const TransactionListItem = () => {
+type TransactionListItemProps = {
+  transaction: dataResponseType;
+};
+
+const TransactionListItem = ({ transaction }: TransactionListItemProps) => {
   return (
     <div
       className="transaction-list-item"
@@ -21,8 +26,11 @@ const TransactionListItem = () => {
           height: 100%;
         `}
       >
-        <HistoryNameAndAmount name={"kelly"} amount={"-12.99"} />
-        <HistoryDate date={"2024-10-01T15:18:38.158418Z"} />
+        <HistoryNameAndAmount
+          name={transaction.name}
+          amount={transaction.amount}
+        />
+        <HistoryDate type={transaction.type} date={transaction.timestamp} />
       </div>
     </div>
   );

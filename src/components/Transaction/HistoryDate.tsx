@@ -1,11 +1,13 @@
 import { css } from "@emotion/react";
 import colors from "../../styles/colors";
+import { formatTimestamp } from "../../utils/filterDate";
 
 type dateProps = {
+  type: string;
   date: string;
 };
 
-const HistoryDate = ({ date }: dateProps) => {
+const HistoryDate = ({ type, date }: dateProps) => {
   return (
     <div
       css={css`
@@ -14,19 +16,19 @@ const HistoryDate = ({ date }: dateProps) => {
         align-items: center;
         height: 21px;
         & > h3 {
-          font-weight: 500;
-          font-size: 16px;
-          color: ${colors.black};
+          font-weight: 400;
+          font-size: 14px;
+          color: ${colors.gray100};
         }
         & > span {
-          font-weight: 700;
-          font-size: 16px;
-          color: ${colors.primary};
+          font-weight: 400;
+          font-size: 14px;
+          color: ${colors.gray100};
         }
       `}
     >
-      <h3>Transfer</h3>
-      <span>{date}</span>
+      <h3>{type}</h3>
+      <span>{formatTimestamp(date)}</span>
     </div>
   );
 };

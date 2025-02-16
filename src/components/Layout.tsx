@@ -1,6 +1,8 @@
 import { Outlet } from "react-router-dom";
 import BottomNav from "./BottomNav";
 import { css } from "@emotion/react";
+import ToastList from "./ToastList";
+import ToastTest from "./ToastTest";
 
 const Layout = () => {
   return (
@@ -13,6 +15,10 @@ const Layout = () => {
         height: 100vh;
       `}
     >
+      <ToastTest />
+      <div id="toast-root">
+        <ToastList />
+      </div>
       <Outlet />
       <BottomNav />
     </div>

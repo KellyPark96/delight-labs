@@ -1,7 +1,12 @@
 import { css } from "@emotion/react";
 import TransactionListItem from "./TransactionListItem";
+import { dataResponseType } from "../../types/dataType";
 
-const TransactionList = () => {
+type TransactionListProps = {
+  transactions: dataResponseType[];
+};
+
+const TransactionList = ({ transactions }: TransactionListProps) => {
   return (
     <div
       css={css`
@@ -10,16 +15,14 @@ const TransactionList = () => {
         gap: 27px;
       `}
     >
-      <TransactionListItem />
-      <TransactionListItem />
-      <TransactionListItem />
-      <TransactionListItem />
-      <TransactionListItem />
-      <TransactionListItem />
-      <TransactionListItem />
-      <TransactionListItem />
-      <TransactionListItem />
-      <TransactionListItem />
+      {transactions?.map((transaction, index) => {
+        return (
+          <TransactionListItem
+            transaction={transaction}
+            key={`transaction-${transaction.name}-${index}`}
+          />
+        );
+      })}
     </div>
   );
 };

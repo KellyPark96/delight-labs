@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import colors from "../styles/colors";
 import TransactionTabs from "./Transaction/TransactionTabs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TransactionTabType } from "../utils/tabState";
 import TransactionList from "./Transaction/TransactionList";
 import { getRecentTransactions } from "../utils/filterHistory";
@@ -21,6 +21,9 @@ type HistoryProps = {
 };
 
 const RecentTransactions = ({ responseData }: HistoryProps) => {
+  const initData = getRecentTransactions(responseData, 20);
+  const [transactions, setTransactions] =
+    useState<dataResponseType[]>(initData);
   const [tabState, setTabState] = useState<TransactionTabType>("all");
   const TabProps: TransactionTabProps = {
     tabs: [
@@ -38,9 +41,13 @@ const RecentTransactions = ({ responseData }: HistoryProps) => {
   const incomeData = filterIncomeAmount(responseData);
   const incomeResponse = getRecentTransactions(incomeData, 10);
 
-  console.log("allresponse", allresponse);
-  console.log("expenseResponse", expenseResponse);
-  console.log("incomeResponse", incomeResponse);
+  useEffect(() => {
+    if (tabState === "all") setTransactions(allresponse);
+    if (tabState === "expense") setTransactions(expenseResponse);
+    if (tabState === "income") setTransactions(incomeResponse);
+  }, [tabState]);
+
+  console.log("current Response", tabState, transactions);
 
   return (
     <div
@@ -56,7 +63,7 @@ const RecentTransactions = ({ responseData }: HistoryProps) => {
     >
       <h2>RecentTransactions</h2>
       <TransactionTabs {...TabProps} />
-      <TransactionList />
+      <TransactionList transactions={transactions} />
     </div>
   );
 };
