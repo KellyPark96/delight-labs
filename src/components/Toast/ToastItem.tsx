@@ -55,7 +55,7 @@ const ToastItem = ({ toast }: ToastItemProps) => {
               height: 100%;
             `}
           >
-            <ToastNameAndAmount name={message.name} amount={"-$432.9"} />
+            <ToastNameAndAmount name={message.name} amount={message.amount} />
             <ToastDate type={message.type} date={message.timestamp} />
           </div>
         </div>
@@ -93,7 +93,10 @@ const ToastBox = newStyled.div<{ $type: ToastType; $visible: boolean }>`
   background-color: ${({ $type }) => getToastColors($type).backgroundColor};
   border: 0;
   color: #fff;
-  padding: 16px 24px;
+  min-width: 200px;
+  max-width: 450px;
+  width: 40%;
+  padding: 16px 20px;
   border-radius: 16px;
   font-size: 14px;
   animation: ${({ $visible }) => ($visible ? fadeIn : fadeOut)} 0.5s ease;

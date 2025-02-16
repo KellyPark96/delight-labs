@@ -2,30 +2,25 @@ import { css } from "@emotion/react";
 import colors from "../styles/colors";
 import TransactionTabs from "./Transaction/TransactionTabs";
 import { useEffect, useState } from "react";
-import { TransactionTabType } from "../utils/tabState";
 import TransactionList from "./Transaction/TransactionList";
 import { getRecentTransactions } from "../utils/filterHistory";
-import { dataResponseType } from "../types/dataType";
+import {
+  HistoryPropType,
+  TransactionTabPropsType,
+  TransactionTabType,
+} from "../types/dataType";
 import {
   filterExpenseAmount,
   filterIncomeAmount,
 } from "../utils/formatCurrency";
 
-export type TransactionTabProps = {
-  tabs: { value: TransactionTabType; label: string }[];
-  state: [string, React.Dispatch<React.SetStateAction<any>>];
-};
-
-type HistoryProps = {
-  responseData: dataResponseType[];
-};
-
-const RecentTransactions = ({ responseData }: HistoryProps) => {
-  const initData = getRecentTransactions(responseData, 20);
-  const [transactions, setTransactions] =
-    useState<dataResponseType[]>(initData);
+const RecentTransactions = ({
+  isLoading,
+  initTransactionData,
+  state: [transactionData, setTransactionData],
+}: HistoryPropType) => {
   const [tabState, setTabState] = useState<TransactionTabType>("all");
-  const TabProps: TransactionTabProps = {
+  const TabProps: TransactionTabPropsType = {
     tabs: [
       { label: "All", value: "all" },
       { label: "Expense", value: "expense" },
@@ -33,21 +28,19 @@ const RecentTransactions = ({ responseData }: HistoryProps) => {
     ],
     state: [tabState, setTabState],
   };
-  const allresponse = getRecentTransactions(responseData, 20);
+  const allresponse = getRecentTransactions(initTransactionData, 20);
 
-  const expenseData = filterExpenseAmount(responseData);
+  const expenseData = filterExpenseAmount(initTransactionData);
   const expenseResponse = getRecentTransactions(expenseData, 10);
 
-  const incomeData = filterIncomeAmount(responseData);
+  const incomeData = filterIncomeAmount(initTransactionData);
   const incomeResponse = getRecentTransactions(incomeData, 10);
 
   useEffect(() => {
-    if (tabState === "all") setTransactions(allresponse);
-    if (tabState === "expense") setTransactions(expenseResponse);
-    if (tabState === "income") setTransactions(incomeResponse);
+    if (tabState === "all") setTransactionData(allresponse);
+    if (tabState === "expense") setTransactionData(expenseResponse);
+    if (tabState === "income") setTransactionData(incomeResponse);
   }, [tabState]);
-
-  console.log("current Response", tabState, transactions);
 
   return (
     <div
@@ -63,7 +56,11 @@ const RecentTransactions = ({ responseData }: HistoryProps) => {
     >
       <h2>RecentTransactions</h2>
       <TransactionTabs {...TabProps} />
-      <TransactionList transactions={transactions} />
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <TransactionList transactions={transactionData} />
+      )}
     </div>
   );
 };

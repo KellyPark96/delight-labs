@@ -13,7 +13,7 @@ const ToastButton = () => {
           toast("success", {
             amount: "-$432.9",
             name: "Name",
-            timestamp: "YYYY.MM.DD 00:00",
+            timestamp: "2025-02-17T18:56:24.816899Z",
             type: "transfer",
           });
         }}
@@ -34,5 +34,5 @@ const StyledButton = newStyled.button`
   background-color: ${colors.primary};
   color: #fff;
   border-radius: 16px;
-  padding: 4px 8px;
+  padding: 4px 15px;
 `;

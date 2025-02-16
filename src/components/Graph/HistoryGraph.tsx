@@ -14,7 +14,6 @@ import {
 import { Line } from "react-chartjs-2";
 import colors from "../../styles/colors";
 import { useEffect, useState } from "react";
-import { GraphTabType } from "../../utils/tabState";
 import GraphTabs from "./GraphTabs";
 import GraphInfoCard from "./GraphInfoCard";
 import {
@@ -22,7 +21,11 @@ import {
   getTransactionsByDateRange,
   groupTransactionsByDate,
 } from "../../utils/filterDate";
-import { dataResponseType } from "../../types/dataType";
+import {
+  GraphPropType,
+  GraphTabPropsType,
+  GraphTabType,
+} from "../../types/dataType";
 import {
   amountsData,
   filterExpenseAmount,
@@ -41,29 +44,20 @@ ChartJS.register(
   Legend
 );
 
-export type TabProps = {
-  tabs: { value: GraphTabType; label: string }[];
-  state: [string, React.Dispatch<React.SetStateAction<any>>];
-};
-
-type HistoryGraphProps = {
-  responseData: dataResponseType[];
-};
-
-const HistoryGraph = ({ responseData }: HistoryGraphProps) => {
+const HistoryGraph = ({
+  isLoading,
+  initGraphData,
+  state: [graphData, setGraphData],
+}: GraphPropType) => {
   const [tabState, setTabState] = useState<GraphTabType>("week");
-  const initData = getTransactionsByDateRange(responseData, 7);
-  const [graphData, setGraphData] = useState<dataResponseType[]>(initData);
 
   useEffect(() => {
-    setGraphData(initData);
-
     tabState === "week"
-      ? setGraphData(getTransactionsByDateRange(responseData, 7))
-      : setGraphData(getTransactionsByDateRange(responseData, 30));
-  }, [tabState, setGraphData]);
+      ? setGraphData(getTransactionsByDateRange(initGraphData, 7))
+      : setGraphData(getTransactionsByDateRange(initGraphData, 30));
+  }, [tabState]);
 
-  const TabProps: TabProps = {
+  const TabProps: GraphTabPropsType = {
     tabs: [
       { label: "Week", value: "week" },
       { label: "Month", value: "month" },
@@ -160,7 +154,17 @@ const HistoryGraph = ({ responseData }: HistoryGraphProps) => {
           justify-content: center;
         `}
       >
-        <Line options={options} data={data} />
+        {isLoading ? (
+          <div
+            css={css`
+              margin-top: 30px;
+            `}
+          >
+            Loading...
+          </div>
+        ) : (
+          <Line options={options} data={data} />
+        )}
       </div>
     </div>
   );

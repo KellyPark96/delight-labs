@@ -5,9 +5,29 @@ export type dataResponseType = {
   type: string;
 };
 
-/*
-amount + 이면 income
-amount - 이면 Expense 이겠지?
-*/
-// {"amount":"5110.28","name":"Katelyn Rocha","timestamp":"2025-01-14T20:55:18.785226Z","type":"transfer"},
-// {"amount":"-4120.04","name":"William White","timestamp":"2024-07-06T10:21:07.485247Z","type":"transfer"}
+/* Graph */
+export type GraphPropType = {
+  isLoading: boolean | undefined;
+  initGraphData: dataResponseType[];
+  state: [dataResponseType[], React.Dispatch<React.SetStateAction<any>>];
+};
+
+export type GraphTabType = "week" | "month";
+export type TransactionTabType = "all" | "expense" | "income";
+
+export type GraphTabPropsType = {
+  tabs: { value: GraphTabType; label: string }[];
+  state: [string, React.Dispatch<React.SetStateAction<any>>];
+};
+
+/* Transaction */
+export type HistoryPropType = {
+  isLoading: boolean | undefined;
+  initTransactionData: dataResponseType[];
+  state: [dataResponseType[], React.Dispatch<React.SetStateAction<any>>];
+};
+
+export type TransactionTabPropsType = {
+  tabs: { value: TransactionTabType; label: string }[];
+  state: [string, React.Dispatch<React.SetStateAction<any>>];
+};

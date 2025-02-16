@@ -1,12 +1,13 @@
 import { css } from "@emotion/react";
-import { TabProps } from "./HistoryGraph";
-import { GraphTabType, updateStorageGraphState } from "../../utils/tabState";
 import colors from "../../styles/colors";
+import { GraphTabPropsType, GraphTabType } from "../../types/dataType";
 
-const GraphTabs = ({ tabs, state: [tabState, setTabState] }: TabProps) => {
+const GraphTabs = ({
+  tabs,
+  state: [tabState, setTabState],
+}: GraphTabPropsType) => {
   const onClickVoteTab = (tabValue: GraphTabType) => {
     setTabState(tabValue);
-    updateStorageGraphState(tabValue);
   };
 
   return (

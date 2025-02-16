@@ -1,18 +1,16 @@
 import { css } from "@emotion/react";
-import {
-  TransactionTabType,
-  updateStorageTransactionState,
-} from "../../utils/tabState";
 import colors from "../../styles/colors";
-import { TransactionTabProps } from "../RecentTransactions";
+import {
+  TransactionTabPropsType,
+  TransactionTabType,
+} from "../../types/dataType";
 
 const TransactionTabs = ({
   tabs,
   state: [tabState, setTabState],
-}: TransactionTabProps) => {
+}: TransactionTabPropsType) => {
   const onClickVoteTab = (tabValue: TransactionTabType) => {
     setTabState(tabValue);
-    updateStorageTransactionState(tabValue);
   };
 
   return (

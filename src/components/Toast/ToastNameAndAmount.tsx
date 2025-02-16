@@ -1,5 +1,4 @@
 import { css } from "@emotion/react";
-import { formatCurrency } from "../../utils/formatCurrency";
 import colors from "../../styles/colors";
 
 type NameAndPriceProps = {
@@ -8,7 +7,6 @@ type NameAndPriceProps = {
 };
 
 const ToastNameAndAmount = ({ name, amount }: NameAndPriceProps) => {
-  const amountValue = formatCurrency(amount);
   return (
     <div
       css={css`
@@ -29,7 +27,7 @@ const ToastNameAndAmount = ({ name, amount }: NameAndPriceProps) => {
       `}
     >
       <h3>{name}</h3>
-      <span>{amountValue}</span>
+      <span>{amount}</span>
     </div>
   );
 };
