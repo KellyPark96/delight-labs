@@ -1,11 +1,12 @@
-import { ToastType, useToastStore } from "../store/toast";
+import { ToastType, useToastStore } from "../store/toastStore";
+import { dataResponseType } from "../types/dataType";
 
 export default function useToast() {
   const { addToastList } = useToastStore();
 
-  const toast = (type: ToastType, message: string) => {
-    const id = String(Math.random()); // 각각의 고유한 id를 사용
-    addToastList({ id, type, message }); // toastList에 추가
+  const toast = (type: ToastType, message: dataResponseType) => {
+    const id = String(Math.random());
+    addToastList({ id, type, message });
   };
 
   return { toast };

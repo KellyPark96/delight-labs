@@ -1,16 +1,23 @@
 import { useEffect, useState } from "react";
-import { ToastItemType, ToastType, useToastStore } from "../store/toast";
-import { keyframes } from "@emotion/react";
+import {
+  ToastItemType,
+  ToastType,
+  useToastStore,
+} from "../../store/toastStore";
+import { css, keyframes } from "@emotion/react";
 import newStyled from "@emotion/styled";
+import colors from "../../styles/colors";
+import ToastNameAndAmount from "./ToastNameAndAmount";
+import ToastDate from "./ToastDate";
 
-const DURATION = 4000;
+const DURATION = 3000;
 const ANIMATION = 500;
 
 interface ToastItemProps {
   toast: ToastItemType;
 }
 
-function ToastItem({ toast }: ToastItemProps) {
+const ToastItem = ({ toast }: ToastItemProps) => {
   const [visible, setVisible] = useState(true);
   const { subtractToastList } = useToastStore();
   const { id, type, message } = toast;
@@ -21,7 +28,7 @@ function ToastItem({ toast }: ToastItemProps) {
     }, DURATION);
 
     const removeTimer = setTimeout(() => {
-      subtractToastList(id); // toastList에서 제거
+      subtractToastList(id);
     }, DURATION + ANIMATION);
 
     return () => {
@@ -33,22 +40,40 @@ function ToastItem({ toast }: ToastItemProps) {
   return (
     <>
       <ToastBox id={id} $type={type} $visible={visible}>
-        {message}
+        <div
+          className="transaction-list-item"
+          css={css`
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            height: 51px;
+          `}
+        >
+          <div
+            css={css`
+              flex: 1;
+              height: 100%;
+            `}
+          >
+            <ToastNameAndAmount name={message.name} amount={"-$432.9"} />
+            <ToastDate type={message.type} date={message.timestamp} />
+          </div>
+        </div>
       </ToastBox>
     </>
   );
-}
+};
 
 const getToastColors = (type: ToastType) => {
   switch (type) {
     case "success":
-      return { backgroundColor: "#E1F4EB", borderColor: "#64B78E" };
-    case "warning":
-      return { backgroundColor: "#FCF4DE", borderColor: "#E7B416" };
-    case "error":
-      return { backgroundColor: "#FCDDDD", borderColor: "#D9534F" };
+      return {
+        backgroundColor: colors.primaryToast,
+      };
     default:
-      return { backgroundColor: "#ffffff", borderColor: "#000000" };
+      return {
+        backgroundColor: colors.primaryToast,
+      };
   }
 };
 
@@ -62,12 +87,12 @@ const fadeOut = keyframes`
 `;
 const ToastBox = newStyled.div<{ $type: ToastType; $visible: boolean }>`
   position: absolute;
-    bottom: 10%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  bottom: 3%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: ${({ $type }) => getToastColors($type).backgroundColor};
-  border: 1px solid ${({ $type }) => getToastColors($type).borderColor};
-  color: #000000;
+  border: 0;
+  color: #fff;
   padding: 16px 24px;
   border-radius: 16px;
   font-size: 14px;

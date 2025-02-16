@@ -1,16 +1,17 @@
 import { create } from "zustand";
+import { dataResponseType } from "../types/dataType";
 
-export type ToastType = "success" | "warning" | "error";
+export type ToastType = "success";
 export type ToastItemType = {
   id: string;
   type: ToastType;
-  message: string;
+  message: dataResponseType;
 };
 
 interface ToastState {
-  toastList: ToastItemType[]; // Toast 알림 List
-  addToastList: (elem: ToastItemType) => void; // Toast 알림을 추가하는 함수
-  subtractToastList: (id: string) => void; // Toast 알림을 제거하는 함수
+  toastList: ToastItemType[];
+  addToastList: (elem: ToastItemType) => void;
+  subtractToastList: (id: string) => void;
 }
 
 export const useToastStore = create<ToastState>((set) => ({
